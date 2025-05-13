@@ -189,17 +189,17 @@ export const leaveTeam = async (req: Request, res: Response): Promise<any> => {
         id: userId,
       },
       data: {
-        teamId : null
+        teamId: null,
       },
       include: {
-        team : true
+        team: true,
       },
     });
 
     return res.status(200).json({
       success: true,
       message: "Successfully left the team",
-      user : updated_user,
+      user: updated_user,
     });
   } catch (error) {
     console.error(error);
@@ -211,25 +211,184 @@ export const leaveTeam = async (req: Request, res: Response): Promise<any> => {
 };
 
 export const getTeams = async (req: Request, res: Response): Promise<any> => {
-    try {
-        const teams = await db.team.findMany({
-            include:{
-                admin:true,
-                members:true
-            }
-        })
+  try {
+    const teams = await db.team.findMany({
+      include: {
+        admin: true,
+        members: true,
+      },
+    });
 
-        return res.status(200).json({
-            success: true,
-            message: "Teams fetched Successfully",
-            teams,
-        });
+    return res.status(200).json({
+      success: true,
+      message: "Teams fetched Successfully",
+      teams,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Error fetching Teams",
+      error,
+    });
+  }
+};
 
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-        message: "Error fetching Teams",
-        error,
-        });
+export const removeMember = async (req: Request, res: Response): Promise<any> => {
+  const userId = req.user?.id;
+  const { memberId } = req.body;
+
+  if (!userId) {
+    return res.status(401).json({
+      success: true,
+      message: "Unauthorized",
+    });
+  }
+
+  if (!memberId) {
+    return res.status(400).json({
+      success: true,
+      message: "Missing memberId",
+    });
+  }
+
+  try {
+    // Fetch admin user and their team
+    const adminUser = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        adminTeam: true,
+      },
+    });
+
+    if (!adminUser?.adminTeam) {
+      return res.status(403).json({
+        success: true,
+        message: "Only team admins can remove members",
+      });
     }
-}
+
+    const teamId = adminUser.adminTeam.id;
+
+    // Fetch the member to be removed
+    const member = await db.user.findUnique({
+      where: {
+        id: memberId,
+      },
+    });
+
+    if (!member || member.teamId !== teamId) {
+      return res.status(400).json({
+        success: true,
+        message: "User is not a member of your team",
+      });
+    }
+
+    // Update member's teamId to null (remove from team)
+    const updatedUser = await db.user.update({
+      where: {
+        id: memberId,
+      },
+      data: {
+        teamId: null,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Member removed successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Error removing member from team",
+      error,
+    });
+  }
+};
+
+export const deleteTeam = async (req: Request, res: Response): Promise<any> => {
+  const userId = req.user?.id;
+  const { teamId } = req.body;
+
+  if (!userId) {
+    return res.status(401).json({
+      success: true,
+      message: "Unauthorized",
+    });
+  }
+
+  if (!teamId) {
+    return res.status(400).json({
+      success: true,
+      message: "Missing teamId",
+    });
+  }
+
+  try {
+    // Fetch admin user and their team
+    const adminUser = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        adminTeam: true,
+      },
+    });
+
+    if (!adminUser?.adminTeam) {
+      return res.status(403).json({
+        success: true,
+        message: "Only team admins can remove members",
+      });
+    }
+
+    if (adminUser.adminTeam.id !== teamId) {
+      return res.status(400).json({
+        success: true,
+        message: "User is not a admin of this team",
+      });
+    }
+
+    const members = await db.user.findMany({
+      where: {
+        teamId,
+      },
+    });
+
+    await db.$transaction(async (tx) => {
+      await Promise.all(
+        members.map((member) => {
+          return tx.user.update({
+            where: {
+              id: member.id,
+            },
+            data: {
+              teamId: null,
+            },
+          });
+        })
+      );
+
+      await tx.team.delete({
+        where: {
+          id: teamId,
+        },
+      });
+    });
+    return res.status(200).json({
+      success: true,
+      message: "Team deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Error deleting team",
+      error,
+    });
+  }
+};
