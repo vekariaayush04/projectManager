@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { createTeam, deleteTeam, getTeams, joinTeam, leaveTeam, removeMember } from "../controllers/team.controller";
+import { createTeam, deleteTeam, getTeam, getTeams, joinTeam, leaveTeam, removeMember } from "../controllers/team.controller";
 
 const teamRouter = Router();
 
@@ -15,5 +15,6 @@ teamRouter.post("/leave-team", authMiddleware , leaveTeam)
 
 //common routes
 teamRouter.get("/get-teams" , authMiddleware , getTeams)
+teamRouter.get("/get-team" , authMiddleware , getTeam)
 
 export default teamRouter

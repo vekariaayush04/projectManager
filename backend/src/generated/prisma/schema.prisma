@@ -21,6 +21,7 @@ model User {
   teamId    String?
   team      Team?    @relation("MEMBER", fields: [teamId], references: [id])
   adminTeam Team?    @relation("ADMIN")
+  isAdmin   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

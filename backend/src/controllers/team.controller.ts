@@ -30,18 +30,30 @@ export const createTeam = async (req: Request, res: Response): Promise<any> => {
         message: "User is already part of a team (as member or admin)",
       });
     }
-
+    let team;
     //creating team and making user admin
-    const team = await db.team.create({
-      data: {
-        name: title,
-        description,
-        adminId: userId!,
-      },
-      include: {
-        admin: true,
-        members: true,
-      },
+    await db.$transaction(async (tx) => {
+      team = await tx.team.create({
+        data: {
+          name: title,
+          description,
+          adminId: userId!,
+        },
+        include: {
+          admin: true,
+          members: true,
+        },
+      });
+
+      await tx.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          isAdmin: true,
+          teamId : team.id
+        },
+      });
     });
 
     return res.status(200).json({
@@ -109,7 +121,7 @@ export const joinTeam = async (req: Request, res: Response): Promise<any> => {
       });
     }
 
-    if (team._count.members === 3) {
+    if (team._count.members === 4) {
       return res.status(400).json({
         success: true,
         message: "Team is Full",
@@ -233,7 +245,10 @@ export const getTeams = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-export const removeMember = async (req: Request, res: Response): Promise<any> => {
+export const removeMember = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   const userId = req.user?.id;
   const { memberId } = req.body;
 
@@ -388,6 +403,52 @@ export const deleteTeam = async (req: Request, res: Response): Promise<any> => {
     return res.status(500).json({
       success: false,
       message: "Error deleting team",
+      error,
+    });
+  }
+};
+
+export const getTeam = async (req: Request, res: Response): Promise<any> => {
+  const userId = req.user?.id;
+  try {
+    let team;
+
+    if (req.user?.isAdmin) {
+      team = await db.team.findUnique({
+        where: {
+          adminId: userId,
+        },
+      });
+    } else {
+      if (req.user?.teamId === null) {
+        return res.status(200).json({
+          success: true,
+          message: "Not Part Of Any Team",
+          team,
+        });
+      }
+      team = await db.team.findUnique({
+        where: {
+          id: req.user?.teamId!,
+        },
+        include: {
+          admin: true,
+          members: true,
+        },
+      });
+    }
+
+    console.log(team);
+
+    return res.status(200).json({
+      success: true,
+      message: "Team fetched Successfully",
+      team,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Error fetching Team",
       error,
     });
   }

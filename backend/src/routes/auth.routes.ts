@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkUser } from "../controllers/auth.controller";
+import { checkUser, logout } from "../controllers/auth.controller";
 import passport from "../config/passport";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import jwt from "jsonwebtoken"
@@ -35,11 +35,12 @@ authRouter.get(
             maxAge: 1000 * 60 * 60 * 24,
         });
     req.session.save(() => {
-      res.redirect("/");
+      res.redirect("http://localhost:5173/");
     });
   }
 );
 
 authRouter.get("/check", authMiddleware , checkUser);
+authRouter.post("/logout", authMiddleware , logout);
 
 export default authRouter;

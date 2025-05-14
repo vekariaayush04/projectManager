@@ -1005,6 +1005,7 @@ export namespace Prisma {
     email: string | null
     name: string | null
     teamId: string | null
+    isAdmin: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1014,6 +1015,7 @@ export namespace Prisma {
     email: string | null
     name: string | null
     teamId: string | null
+    isAdmin: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1023,6 +1025,7 @@ export namespace Prisma {
     email: number
     name: number
     teamId: number
+    isAdmin: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1034,6 +1037,7 @@ export namespace Prisma {
     email?: true
     name?: true
     teamId?: true
+    isAdmin?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1043,6 +1047,7 @@ export namespace Prisma {
     email?: true
     name?: true
     teamId?: true
+    isAdmin?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1052,6 +1057,7 @@ export namespace Prisma {
     email?: true
     name?: true
     teamId?: true
+    isAdmin?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1134,6 +1140,7 @@ export namespace Prisma {
     email: string
     name: string
     teamId: string | null
+    isAdmin: boolean
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -1160,6 +1167,7 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     teamId?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     team?: boolean | User$teamArgs<ExtArgs>
@@ -1171,6 +1179,7 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     teamId?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     team?: boolean | User$teamArgs<ExtArgs>
@@ -1181,6 +1190,7 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     teamId?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     team?: boolean | User$teamArgs<ExtArgs>
@@ -1191,11 +1201,12 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     teamId?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "teamId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "teamId" | "isAdmin" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     team?: boolean | User$teamArgs<ExtArgs>
     adminTeam?: boolean | User$adminTeamArgs<ExtArgs>
@@ -1218,6 +1229,7 @@ export namespace Prisma {
       email: string
       name: string
       teamId: string | null
+      isAdmin: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -1649,6 +1661,7 @@ export namespace Prisma {
     readonly email: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly teamId: FieldRef<"User", 'String'>
+    readonly isAdmin: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -3223,6 +3236,7 @@ export namespace Prisma {
     email: 'email',
     name: 'name',
     teamId: 'teamId',
+    isAdmin: 'isAdmin',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -3286,6 +3300,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -3324,6 +3345,7 @@ export namespace Prisma {
     email?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     teamId?: StringNullableFilter<"User"> | string | null
+    isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     team?: XOR<TeamNullableScalarRelationFilter, TeamWhereInput> | null
@@ -3335,6 +3357,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     teamId?: SortOrderInput | SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     team?: TeamOrderByWithRelationInput
@@ -3349,6 +3372,7 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringFilter<"User"> | string
     teamId?: StringNullableFilter<"User"> | string | null
+    isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     team?: XOR<TeamNullableScalarRelationFilter, TeamWhereInput> | null
@@ -3360,6 +3384,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     teamId?: SortOrderInput | SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -3375,6 +3400,7 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"User"> | string
     name?: StringWithAggregatesFilter<"User"> | string
     teamId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    isAdmin?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -3446,6 +3472,7 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     team?: TeamCreateNestedOneWithoutMembersInput
@@ -3457,6 +3484,7 @@ export namespace Prisma {
     email: string
     name: string
     teamId?: string | null
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     adminTeam?: TeamUncheckedCreateNestedOneWithoutAdminInput
@@ -3466,6 +3494,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     team?: TeamUpdateOneWithoutMembersNestedInput
@@ -3477,6 +3506,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     adminTeam?: TeamUncheckedUpdateOneWithoutAdminNestedInput
@@ -3487,6 +3517,7 @@ export namespace Prisma {
     email: string
     name: string
     teamId?: string | null
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3495,6 +3526,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3504,6 +3536,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3604,6 +3637,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -3630,6 +3668,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     teamId?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3639,6 +3678,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     teamId?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3648,6 +3688,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     teamId?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3686,6 +3727,14 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -3764,6 +3813,10 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -3888,6 +3941,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -3953,6 +4011,14 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -4077,6 +4143,7 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     team?: TeamCreateNestedOneWithoutMembersInput
@@ -4087,6 +4154,7 @@ export namespace Prisma {
     email: string
     name: string
     teamId?: string | null
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -4100,6 +4168,7 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     adminTeam?: TeamCreateNestedOneWithoutAdminInput
@@ -4109,6 +4178,7 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     adminTeam?: TeamUncheckedCreateNestedOneWithoutAdminInput
@@ -4139,6 +4209,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     team?: TeamUpdateOneWithoutMembersNestedInput
@@ -4149,6 +4220,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4177,6 +4249,7 @@ export namespace Prisma {
     email?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     teamId?: StringNullableFilter<"User"> | string | null
+    isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }
@@ -4185,6 +4258,7 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -4193,6 +4267,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     adminTeam?: TeamUpdateOneWithoutAdminNestedInput
@@ -4202,6 +4277,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     adminTeam?: TeamUncheckedUpdateOneWithoutAdminNestedInput
@@ -4211,6 +4287,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
